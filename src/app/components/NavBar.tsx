@@ -4,7 +4,7 @@ import { Playfair_Display } from 'next/font/google'
 import Image from 'next/image'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../redux/store'
-import { setTipoFiltro } from '../redux/slices/joyasSlice'
+import { clearFilter, setTypeFilter } from '../redux/slices/joyasSlice'
 
 const playfair = Playfair_Display({ subsets: ['latin'] })
 
@@ -12,7 +12,13 @@ export const NavBar = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const handleFetchJewelry = (tipo: string | null) => {
-    dispatch(setTipoFiltro(tipo))
+    dispatch(clearFilter())
+    dispatch(setTypeFilter(tipo))
+  }
+
+  const handleFetchAll = (tipo: string | null) => {
+    dispatch(clearFilter())
+    dispatch(setTypeFilter(tipo))
   }
 
   return (
@@ -21,7 +27,7 @@ export const NavBar = () => {
         className={`flex h-auto w-auto items-center gap-10 pl-16 bg-[#ffffff] text-gray-950 ${playfair.className}`}
       >
         <div className='flex cursor-pointer'>
-          <button onClick={() => handleFetchJewelry(null)}>
+          <button onClick={() => handleFetchAll(null)}>
             <Image
               src='https://firebasestorage.googleapis.com/v0/b/piedra-angular-webapp.appspot.com/o/Logos%2FPiedra%20Angular%20-%20LOGO.jpg?alt=media&token=2001ee5f-c0b1-43ef-a3c0-526e6532d0cc'
               alt='Logo'

@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Image from 'next/image'
+import { Filters } from './home/components/Filters'
 import { Playfair_Display } from 'next/font/google'
 import { RootState, AppDispatch } from './redux/store'
 import { fetchJoyas } from './redux/slices/joyasSlice'
@@ -11,14 +12,17 @@ const playfair = Playfair_Display({ subsets: ['latin'] })
 
 export default function Catalogo() {
   const dispatch = useDispatch<AppDispatch>()
-  const { joyas, tipoFiltro } = useSelector((state: RootState) => state.joyas)
+  const { joyas, typeFilter, priceFilter, alphabetFilter } = useSelector(
+    (state: RootState) => state.joyas,
+  )
 
   useEffect(() => {
-    dispatch(fetchJoyas(tipoFiltro))
-  }, [dispatch, tipoFiltro])
+    dispatch(fetchJoyas({ typeFilter, priceFilter, alphabetFilter }))
+  }, [dispatch, typeFilter, priceFilter, alphabetFilter])
 
   return (
-    <div className={`min-h-screen bg-[#f8f5f0] ${playfair.className}`}>
+    <div className={`flex min-h-screen bg-[#f8f5f0] ${playfair.className}`}>
+      <Filters />
       <div className='container mx-auto px-4 py-16'>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
           {joyas.map((joya) => (
