@@ -15,17 +15,19 @@ interface Joya {
 }
 
 interface JoyasState {
-  joyas: Joya[]
+  joyas: Joya[] | null
+  singleJoya: Joya | null
   loading: boolean
   error: string | null
   typeFilter: string | null
   priceFilter: 'asc' | 'desc' | null
   alphabetFilter: 'asc' | 'desc' | null
-  filter: []
+  filter: Joya[]
 }
 
 const initialState: JoyasState = {
-  joyas: [],
+  joyas: null,
+  singleJoya: null,
   loading: false,
   error: null,
   typeFilter: null,
@@ -47,7 +49,7 @@ export const fetchJoyas = createAsyncThunk(
   }) => {
     let url = `${process.env.NEXT_PUBLIC_API_URL}/joyas?populate=Imagen`
     if (typeFilter) {
-      url += `&filters[Tipo][$eq]=${typeFilter}`
+      url += `&filters[categoria][Name][$eq]=${typeFilter}`
     }
 
     if (priceFilter) {
@@ -57,8 +59,6 @@ export const fetchJoyas = createAsyncThunk(
     if (alphabetFilter) {
       url += `&sort=Nombre:${alphabetFilter}`
     }
-
-    console.log(url)
 
     const response = await axios.get(url, {
       headers: {
@@ -86,17 +86,17 @@ export const fetchJoyas = createAsyncThunk(
   },
 )
 
-/* export const fetchJoyasById = createAsyncThunk(
+export const fetchJoyasById = createAsyncThunk(
   'joyas/fetchJoyasById',
   async (id: number) => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/joyas/${id}?populate=Imagen`
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/joyas/?populate=Imagen&filters[id][$eq]=${id}`
 
     const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
       },
     })
-    const joyaData = response.data.data
+    const joyaData = response.data.data[0]
 
     if (!joyaData) {
       console.error('Unexpected API response format:', response.data)
@@ -105,17 +105,17 @@ export const fetchJoyas = createAsyncThunk(
 
     return {
       id: joyaData.id ?? 0,
-      Nombre: joyaData.attributes?.Nombre || 'Desconocido',
+      Nombre: joyaData?.Nombre || 'Desconocido',
       Imagen:
         joyaData?.Imagen?.map((img: Imagen) => ({
           id: img.id ?? 0,
           url: img?.url || '',
         })) || [],
-      Precio: joyaData.attributes?.Precio || 0,
-      Tipo: joyaData.attributes?.Tipo || 'Desconocido',
+      Precio: joyaData?.Precio || 0,
+      Tipo: joyaData?.Tipo || 'Desconocido',
     }
-  }
-) */
+  },
+)
 
 const joyasSlice = createSlice({
   name: 'joyas',
@@ -153,6 +153,28 @@ const joyasSlice = createSlice({
         console.log('Fetch failed, error:', action.error.message)
         state.loading = false
         state.error = action.error.message || 'Error fetching joyas'
+      })
+      .addCase(fetchJoyasById.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(fetchJoyasById.fulfilled, (state, action) => {
+        console.log('Fetch successful, joya:', action.payload)
+        state.loading = false
+        state.singleJoya = action.payload
+        state.joyas = null
+        /*         if (Array.isArray(action.payload)) {
+                  state.joyas = action.payload;
+                  state.singleJoya = null;
+                } else {
+                  state.singleJoya = action.payload;
+                  state.joyas = null;
+                } */
+      })
+      .addCase(fetchJoyasById.rejected, (state, action) => {
+        console.log('Fetch by ID failed, error:', action.error.message)
+        state.loading = false
+        state.error = action.error.message || 'Error fetching joya by ID'
       })
   },
 })
