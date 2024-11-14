@@ -20,6 +20,7 @@ interface JoyasState {
   loading: boolean
   error: string | null
   typeFilter: string | null
+  subtypeFilter: string | null
   priceFilter: 'asc' | 'desc' | null
   alphabetFilter: 'asc' | 'desc' | null
   filter: Joya[]
@@ -31,6 +32,7 @@ const initialState: JoyasState = {
   loading: false,
   error: null,
   typeFilter: null,
+  subtypeFilter: null,
   priceFilter: null,
   alphabetFilter: null,
   filter: [],
@@ -40,16 +42,22 @@ export const fetchJoyas = createAsyncThunk(
   'joyas/fetchJoyas',
   async ({
     typeFilter,
+    subtypeFilter,
     priceFilter,
     alphabetFilter,
   }: {
     typeFilter?: string | null
+    subtypeFilter?: string | null
     priceFilter?: 'asc' | 'desc' | null
     alphabetFilter?: 'asc' | 'desc' | null
   }) => {
-    let url = `${process.env.NEXT_PUBLIC_API_URL}/joyas?populate=Imagen`
+    let url = `${process.env.NEXT_PUBLIC_API_URL}/joyas?populate=Imagen&filters[Activo][$eq]=true`
     if (typeFilter) {
       url += `&filters[categoria][Name][$eq]=${typeFilter}`
+    }
+
+    if (subtypeFilter) {
+      url += `&filters[subcategoria][NombreSub][$eq]=${subtypeFilter}`
     }
 
     if (priceFilter) {
@@ -59,6 +67,7 @@ export const fetchJoyas = createAsyncThunk(
     if (alphabetFilter) {
       url += `&sort=Nombre:${alphabetFilter}`
     }
+    console.log('url', url)
 
     const response = await axios.get(url, {
       headers: {
@@ -66,7 +75,7 @@ export const fetchJoyas = createAsyncThunk(
       },
     })
     const joyasData = response.data.data
-
+    console.log('hola', joyasData)
     if (!joyasData || !Array.isArray(joyasData)) {
       console.error('Unexpected API response format:', response.data)
       return []
@@ -123,12 +132,16 @@ const joyasSlice = createSlice({
   reducers: {
     clearFilter: (state) => {
       state.priceFilter = null
+      state.subtypeFilter = null
       state.alphabetFilter = null
       state.loading = false
       state.error = null
     },
     setTypeFilter: (state, action) => {
       state.typeFilter = action.payload
+    },
+    setSubtypeFilter: (state, action) => {
+      state.subtypeFilter = action.payload
     },
     setPriceFilter: (state, action) => {
       state.priceFilter = action.payload
@@ -181,6 +194,7 @@ const joyasSlice = createSlice({
 
 export const { clearFilter } = joyasSlice.actions
 export const { setTypeFilter } = joyasSlice.actions
+export const { setSubtypeFilter } = joyasSlice.actions
 export const { setPriceFilter } = joyasSlice.actions
 export const { setAlphabetFilter } = joyasSlice.actions
 

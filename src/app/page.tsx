@@ -13,13 +13,14 @@ const playfair = Playfair_Display({ subsets: ['latin'] })
 
 export default function Catalogo() {
   const dispatch = useDispatch<AppDispatch>()
-  const { joyas, typeFilter, priceFilter, alphabetFilter } = useSelector(
-    (state: RootState) => state.joyas,
-  )
+  const { joyas, typeFilter, priceFilter, alphabetFilter, subtypeFilter } =
+    useSelector((state: RootState) => state.joyas)
 
   useEffect(() => {
-    dispatch(fetchJoyas({ typeFilter, priceFilter, alphabetFilter }))
-  }, [dispatch, typeFilter, priceFilter, alphabetFilter])
+    dispatch(
+      fetchJoyas({ typeFilter, priceFilter, alphabetFilter, subtypeFilter }),
+    )
+  }, [dispatch, typeFilter, priceFilter, alphabetFilter, subtypeFilter])
 
   return (
     <div

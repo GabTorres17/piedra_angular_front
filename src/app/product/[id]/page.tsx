@@ -43,7 +43,7 @@ export default function ProductDetail() {
       </div>
     )
 
-  const phoneNumber = '+59165259271'
+  const phoneNumber = '+59177389315'
   const createWhatsappLink = (message: string) =>
     `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
 
@@ -51,33 +51,36 @@ export default function ProductDetail() {
     <div
       className={`flex flex-col md:flex-row min-h-screen h-auto w-auto bg-[#f8f5f0] ${playfair.className}`}
     >
-      <div className='flex flex-col justify-center mx-auto px-4 py-8'>
+      <div className='flex flex-col lg:w-4/5 justify-center mx-auto px-4 pb-8'>
         <Link
           href='/'
           className='flex text-lg items-center text-gray-600 hover:text-gray-800 mb-8'
         >
           Volver al catálogo
         </Link>
-        <div className='rounded-lg overflow-hidden md:w-auto shadow-xl'>
-          <div className='md:flex h-auto '>
-            <div className='flex md:flex-shrink-0 md:flex-start w-auto'>
+        <div className='rounded-lg overflow-hidden md:w-auto shadow-xl h-3/4'>
+          <div className='md:flex justify-center'>
+            <div className='flex justify-start items-center w-full md:w-1/2 h-1/2 md:h-auto'>
               <Image
                 src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${singleJoya.Imagen[0].url}`}
                 alt={singleJoya.Nombre}
-                width={500}
-                height={500}
+                width={700}
+                height={700}
                 objectFit='cover'
-                className='w-full h-96 md:h-full md:w-96 object-cover'
+                className='flex-1 h-full w-full object-cover'
               />
             </div>
             <div className='flex flex-col justify-center p-8 gap-4 w-auto'>
+              <p className='text-gray-900 mb-4 text-3xl font-semibold'>
+                {singleJoya.Nombre}
+              </p>
               <p className='text-gray-600 mb-4'>Tipo: {singleJoya.Tipo}</p>
               <p className='text-3xl font-bold text-gray-900 mb-6'>
                 {singleJoya.Precio} bs.
               </p>
               <a
                 href={createWhatsappLink(
-                  `Hola, dime el precio de ${singleJoya.Nombre}`,
+                  `Hola, quiero saber el precio de ${singleJoya.Nombre}`,
                 )}
                 target='_blank'
                 rel='noopener noreferrer'
@@ -87,7 +90,7 @@ export default function ProductDetail() {
               </a>
               <a
                 href={createWhatsappLink(
-                  `Hola, dale más información de ${singleJoya.Nombre}`,
+                  `Hola, solicito más información sobre ${singleJoya.Nombre}`,
                 )}
                 target='_blank'
                 rel='noopener noreferrer'
