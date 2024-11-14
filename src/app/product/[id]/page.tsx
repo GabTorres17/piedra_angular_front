@@ -80,33 +80,23 @@ export default function ProductDetail() {
               </p>
               <a
                 href={createWhatsappLink(
-                  `Hola, quiero saber el precio de ${singleJoya.Nombre}`,
+                  `Hola, deseo comprar ${singleJoya.Nombre}`,
                 )}
                 target='_blank'
                 rel='noopener noreferrer'
                 className='flex w-fit gap-2 items-center bg-lime-900 text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition-colors'
               >
-                <FaWhatsapp size={20} /> Dime el precio
+                <FaWhatsapp size={20} /> Deseo comprar esta joya
               </a>
               <a
                 href={createWhatsappLink(
-                  `Hola, solicito más información sobre ${singleJoya.Nombre}`,
+                  `Hola, quiero más información sobre ${singleJoya.Nombre}`,
                 )}
                 target='_blank'
                 rel='noopener noreferrer'
                 className='flex w-fit gap-2 items-center bg-lime-700 text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition-colors'
               >
                 <FaWhatsapp size={20} /> Más información
-              </a>
-              <a
-                href={createWhatsappLink(
-                  `Hola, está disponible ${singleJoya.Nombre}?`,
-                )}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='flex w-fit gap-2 items-center bg-lime-500 text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition-colors'
-              >
-                <FaWhatsapp size={20} /> Está disponible?
               </a>
             </div>
           </div>
