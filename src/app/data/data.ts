@@ -19,6 +19,11 @@ export interface Jewelry {
   nested: Subcategory[]
 }
 
+export interface SubcategoriesDeals {
+  name: string
+  value: string
+}
+
 export interface SubcategoriesRings {
   name: string
   value: string
@@ -67,6 +72,25 @@ export const alphabetFilter: AlphabetFilter[] = [
   {
     name: 'Z-A',
     value: 'desc',
+  },
+]
+
+export const subcategoriesDeals: SubcategoriesDeals[] = [
+  {
+    name: 'Anillos para varón',
+    value: 'PromoAnillosHombre',
+  },
+  {
+    name: 'Cadenas con dije para varón',
+    value: 'PromoCadenasDijeHombre',
+  },
+  {
+    name: 'Anillos para mujer',
+    value: 'PromoAnillosMujer',
+  },
+  {
+    name: 'Cadenas con dije para mujer',
+    value: 'PromoCadenasDijeMujer',
   },
 ]
 
@@ -160,6 +184,12 @@ export const subcategoriesCharms: SubcategoriesCharms[] = [
 ]
 
 export const jewelry: Jewelry[] = [
+  {
+    name: 'Promociones',
+    value: 'promociones',
+    id: 'promociones',
+    nested: subcategoriesDeals,
+  },
   {
     name: 'Anillos',
     value: 'anillo',
