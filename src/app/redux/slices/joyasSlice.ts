@@ -67,7 +67,6 @@ export const fetchJoyas = createAsyncThunk(
     if (alphabetFilter) {
       url += `&sort=Nombre:${alphabetFilter}`
     }
-    console.log('url', url)
 
     const response = await axios.get(url, {
       headers: {
@@ -75,7 +74,6 @@ export const fetchJoyas = createAsyncThunk(
       },
     })
     const joyasData = response.data.data
-    console.log('hola', joyasData)
     if (!joyasData || !Array.isArray(joyasData)) {
       console.error('Unexpected API response format:', response.data)
       return []
@@ -153,17 +151,14 @@ const joyasSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchJoyas.pending, (state) => {
-        console.log('Fetching joyas...')
         state.loading = true
         state.error = null
       })
       .addCase(fetchJoyas.fulfilled, (state, action) => {
-        console.log('Fetch successful, joyas:', action.payload)
         state.loading = false
         state.joyas = action.payload
       })
       .addCase(fetchJoyas.rejected, (state, action) => {
-        console.log('Fetch failed, error:', action.error.message)
         state.loading = false
         state.error = action.error.message || 'Error fetching joyas'
       })
@@ -172,20 +167,11 @@ const joyasSlice = createSlice({
         state.error = null
       })
       .addCase(fetchJoyasById.fulfilled, (state, action) => {
-        console.log('Fetch successful, joya:', action.payload)
         state.loading = false
         state.singleJoya = action.payload
         state.joyas = null
-        /*         if (Array.isArray(action.payload)) {
-                  state.joyas = action.payload;
-                  state.singleJoya = null;
-                } else {
-                  state.singleJoya = action.payload;
-                  state.joyas = null;
-                } */
       })
       .addCase(fetchJoyasById.rejected, (state, action) => {
-        console.log('Fetch by ID failed, error:', action.error.message)
         state.loading = false
         state.error = action.error.message || 'Error fetching joya by ID'
       })
