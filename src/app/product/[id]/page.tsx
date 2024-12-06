@@ -43,7 +43,7 @@ export default function ProductDetail() {
       </div>
     )
 
-  const phoneNumber = '+59177389315'
+  const phoneNumber = '+59175370113'
   const createWhatsappLink = (message: string) =>
     `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
 
